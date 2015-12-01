@@ -3,7 +3,7 @@ KassenSimulation mit ODEMX in C++
 
 
 ## Use of make
-  run: runs KassenSim
-  all: compiles and links 
-  clean: cleans up
+  run: runs KassenSim \r\n
+  all: compiles and links \r\n
+  clean: cleans up \r\n
   
