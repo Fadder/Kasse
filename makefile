@@ -8,7 +8,7 @@ HPPFILES := $(wildcard *.h) $(wildcard *.hpp)
 
 LIBS 	:= -lOdemxD
 OBJS 	:= $(CPPFILES:%.cpp=%.o)
-TARGET 	:= Kasse
+TARGET 	:= KassenSim
 
 # runnable
 all: $(TARGET)
