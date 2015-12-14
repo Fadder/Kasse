@@ -1,7 +1,6 @@
-#include "Ablage.h"
-
 #include <odemx/odemx.h>
 #include "WareUndRechnung.h"
+#include "Ablage.h"
 using namespace std;
 using namespace odemx::synchronization;
 
@@ -10,7 +9,7 @@ Ablage::Ablage(Simulation& sim)
 	ablageKapazitaet = 10000; //default
 	warenUebertragung = PortTailT<Ware>::create(sim, "warenUebertragung", PortMode::WAITING_MODE,
 			ablageKapazitaet);
-	exklusiveNutzung = new Bin(sim, "exklusiveNutzung", 1);
+	exklusiveNutzung = new Bin(sim, "AblageExklusiveNutzung", 1);
 }
 
 Ware Ablage::wareEntnehmen()
@@ -25,10 +24,8 @@ void Ablage::wareLegen(Ware zuLegen)
 
 void Ablage::kundeMoechteBenutzen()
 {
-	if(exklusiveNutzung->getTokenNumber())
-	{
-		exklusiveNutzung->take(1); //und return(true)??
-	}
+	exklusiveNutzung->take(1);
+
 }
 
 void Ablage::furNaechstenKundenFreigeben()

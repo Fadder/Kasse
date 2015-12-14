@@ -1,28 +1,32 @@
 #ifndef WAREUNDRECHNUNG_H_
 #define WAREUNDRECHNUNG_H_
 
+#include <string>
 #include <odemx/odemx.h>
 using namespace odemx::synchronization;
 
 class Ware : public PortData {
-	int preis;
+	double preis;
 	bool letzteWare = false;
-
 public:
-	Ware(int preis, bool istLetzteWare = false);
+	std::string besitzer;
+	int id;
+
+
+	Ware(double preis, std::string besitzer, int id , bool istLetzteWare = false);
 	virtual ~Ware() {}
 
 	bool letzteWareDesKunden();
-	int kosten(); //gibt den Preis der Ware zurueck
+	double kosten(); //gibt den Preis der Ware zurueck
 };
 
 class Rechnung : public PortData {
-	int betrag;
+	double betrag;
 public:
-	Rechnung(int betrag);
+	Rechnung(double betrag);
 	virtual ~Rechnung() {}
 
-	int getBetrag();
+	double getBetrag();
 };
 
 #endif /* WAREUNDRECHNUNG_H_ */

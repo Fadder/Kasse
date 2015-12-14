@@ -1,5 +1,5 @@
-#ifndef ABLAGE_TXT_
-#define ABLAGE_TXT_
+#ifndef ABLAGE_H_
+#define ABLAGE_H_
 
 #include <odemx/odemx.h>
 #include "WareUndRechnung.h"
@@ -21,4 +21,5 @@ public:
 	void ablageKapazitaetSetzenAuf(int anzWaren);
 };
 
-#endif /* ABLAGE_TXT_ */
+#endif /* ABLAGE_H_ */
+

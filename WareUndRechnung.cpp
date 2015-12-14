@@ -7,19 +7,22 @@
 
 #include "WareUndRechnung.h"
 
+#include <string>
 #include <odemx/odemx.h>
 using namespace odemx::synchronization;
 
 /*----Implementation von "Ware"----*/
-Ware::Ware(int preis, bool istLetzteWare) : preis(preis), letzteWare(istLetzteWare) {}
+Ware::Ware(double preis, std::string besitzer, int id , bool istLetzteWare) : preis(preis),
+					letzteWare(istLetzteWare), besitzer(besitzer), id(id)
+{}
 
 bool Ware::letzteWareDesKunden() { return letzteWare; }
-int Ware::kosten() { return preis; }
+double Ware::kosten() { return preis; }
 
 
 /*----Implementation von "Rechnung"----*/
-Rechnung::Rechnung(int betrag) { this->betrag = betrag; }
+Rechnung::Rechnung(double betrag) { this->betrag = betrag; }
 
-int Rechnung::getBetrag() { return betrag; }
+double Rechnung::getBetrag() { return betrag; }
 
 

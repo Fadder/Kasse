@@ -1,45 +1,43 @@
 /*
- * Band.cpp
+ * BandTest.cpp
  *
- *  Created on: Dec 13, 2015
- *      Author: vincent
+ *  Created on: 13.12.2015
+ *      Author: work
  */
 
 #include "Band.h"
+#include "WareUndRechnung.h"
+#include <odemx/odemx.h>
+#include <string>
 #include <iostream>
-
+#include <memory>
 using namespace odemx::synchronization;
+using odemx::base::Simulation;
+using namespace std;
 
-Band::Band(odemx::base::Simulation& sim)
-: exclusiveNutzung(sim, "exclusiveNutzung", 1)
-, warenUebertragung(PortTail::create(sim, "warenUebertragung"))
-{}
-
-void
-Band::bandExclusivBenutzen(){
-	exclusiveNutzung.take(1);
-	std::cout << "Band wird exclusiv benutzt" << std::endl;
+Band::Band(Simulation& sim) : exclusiveNutznung(sim, "BandLock", 1), bandkapazitaet(20) {
+	ptrPT = PortTail::create( sim, "warenUebertragung", WAITING_MODE, bandkapazitaet );
 }
 
-void
-Band::bandFreigeben(){
-	exclusiveNutzung.give(1);
-	std::cout << "Band wird freigegeben" << std::endl;
+Band::~Band() {
+	// TODO Auto-generated destructor stub
 }
 
-void
-Band::wareAufsBandLegen(Ware* ware){
-	warenUebertragung->put(ware);
-	std::cout << "Ware wird aufs Band gelegt" << std::endl;
+void Band::bandExclusivBenutzen() {
+	exclusiveNutznung.take(1);
 }
 
-std::unique_ptr<Ware>
-Band::wareEntnehmen(){
-	PortTail::HeadPtr hptr = warenUebertragung->getHead();
-	std::unique_ptr<Ware> uptr = std::unique_ptr<Ware>(static_cast<Ware*>(*hptr->get()));
-	std::cout << "Ware wird vom Band genommen" << std::endl;
-	return uptr;
+void Band::bandFreigeben() {
+	exclusiveNutznung.give(1);
 }
 
-Band::~Band() {}
+void Band::wareAufsBandLegen(Ware* ware) {
+	ptrPT->put(ware);
+}
 
+Ware Band::wareEntnehmen() {
+	std::auto_ptr< PortData* > data = ptrPT->getHead()->get();
+	Ware* ware = static_cast<Ware*>(*data);
+
+	return *ware;
+}
