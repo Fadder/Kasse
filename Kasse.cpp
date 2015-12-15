@@ -6,7 +6,7 @@
 using odemx::base::Simulation;
 
 Kasse::Kasse() : kundenGen(*this), kassierer(*this), umsatz(0),leerlauf(0), kundenAnzahl(0), abfertigungsDauerGesamt(0),
-				 band(*this), ablage(*this)
+				 band(*this), ablage(*this), bezahlung(*this)
 {/*erzeuge Ablage, Bezahlung, Band, Kassierer, KundenGenerator*/ }
 
 void Kasse::initSimulation() { /* aktiviere Kassierer und KundenGenerator*/

@@ -16,7 +16,7 @@ using odemx::base::Simulation;
 using namespace std;
 
 Band::Band(Simulation& sim) : exclusiveNutznung(sim, "BandLock", 1), bandkapazitaet(20) {
-	ptrPT = PortTail::create( sim, "warenUebertragung", WAITING_MODE, bandkapazitaet );
+	ptrPT = PortTail::create( sim, "warenUebertragungBand", WAITING_MODE, bandkapazitaet );
 }
 
 Band::~Band() {

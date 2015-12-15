@@ -21,8 +21,13 @@ double Ware::kosten() { return preis; }
 
 
 /*----Implementation von "Rechnung"----*/
-Rechnung::Rechnung(double betrag) { this->betrag = betrag; }
+Rechnung::Rechnung(double betrag, double dauerDerBezahlug) { this->betrag = betrag; this->dauerDerBezahlung = dauerDerBezahlug; }
 
 double Rechnung::getBetrag() { return betrag; }
+
+//Dauer der gesamten Bezahlungsphase
+double Rechnung::dauerDerGesamtenBezahlung() {
+	return dauerDerBezahlung;
+}
 
 

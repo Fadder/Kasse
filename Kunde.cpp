@@ -1,10 +1,3 @@
-/*
- * Kunde.cpp
- *
- *  Created on: 12.12.2015
- *      Author: work
- */
-
 #include "Band.h"
 #include <string>
 #include <iostream>
@@ -12,6 +5,7 @@
 #include "Kasse.h"
 #include "Person.h"
 #include "Ablage.h"
+#include "Bezahlung.h"
 #include "WareUndRechnung.h"
 #include <odemx/odemx.h>
 using namespace odemx::random;
@@ -98,6 +92,9 @@ void Kunde::einkaufskorbFuellen() {
 int Kunde::main() {
 	Band& band = static_cast<Kasse&>( this->getSimulation() ).band;
 	Ablage& ablage = static_cast<Kasse&>( this->getSimulation() ).ablage;
+	Bezahlung& bezahlung = static_cast<Kasse&>( this->getSimulation() ).bezahlung;
+	Rechnung rechnung{0, 0};
+	double benoetigterAnteilVonDerBezahlung = 0.6; //der Kunde benoetigt 60% der Zeit der gesamten Bezahlungsphase
 
 
 	//Lebenslauf------------------------------
@@ -114,7 +111,6 @@ int Kunde::main() {
 			//holdFor ist vor "band.wareAufsBandLegen(einkaufskorb[i])", weil sonst die Ware schon vor der
 			//eigentlichen Warenbewegung auf dem Band waere
 			holdFor( this->dauerEinerWarenbewegung() );
-			//band.wareAufsBandLegen(einkaufskorb[i]);
 			band.wareAufsBandLegen( &(einkaufskorb[i]) );
 
 			message("Ware wurde auf das Band gelegt", einkaufskorb[i]);
@@ -132,24 +128,36 @@ int Kunde::main() {
 	message("befindet sich in dem Ablagebereich");
 
 	//der Kunde wartet auf seine Waren und legt diese in seinen Einkaufswagen
-	Ware wareAusDerAblage(0,"Null", 0, false);
+	Ware wareAusDerAblage(0,"Null", 0, false);//ignorieren
 	do {
+		message("wartet auf seine Waren");
 		wareAusDerAblage = ablage.wareEntnehmen();
 		message("faengt an eine Ware aus der Ablage zu entnehmen");
 		holdFor( this->dauerEinerWarenbewegung() );
 		message("hat eine Ware aus der Ablage entnohmen", wareAusDerAblage);
-
-
 	} while ( !(wareAusDerAblage.letzteWareDesKunden()) );
 
 	//Alle Waren wurden in den Einkaufswagen gelegt
 	//Jetzt wartet der Kunde auf die Rechnung
 	message("wartet auf die Rechnung");
+	rechnung = bezahlung.kundeWartetAufRechnung();
+	message("Rechnung bekommen");
 
 
+	//Kunde schaut sich die Rechnung an, sucht das passende Geld und uebergibt es dem Kassierer
+	//Multiplikation mit "benoetigterAnteilVonDerBezahlung" bedeutet:
+	//es wird eine Bezahlzeit fuer die ganze Bezahlungsphase zwischen Kunden und Kassierer generiert
+	//und in der Rechnung gespeichert
+	//"benoetigterAnteilVonDerBezahlung" gibt an, wieviel Prozent von dieser Zeit der Kunde benoetigt
+	holdFor( rechnung.dauerDerGesamtenBezahlung() * benoetigterAnteilVonDerBezahlung );
+
+	bezahlung.rechnungBezahlen(rechnung);
+	message("hat bezahlt");
 
 	//Kunde hat bezahlt und verlaesst jetzt die Ablage
 	ablage.furNaechstenKundenFreigeben();
+	message("verlaesst die Ablage");
+	message("--------------------------KUNDE-ENDE-----------------------------------");
 
 	return 0;
 }

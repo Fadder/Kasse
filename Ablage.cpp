@@ -7,7 +7,7 @@ using namespace odemx::synchronization;
 Ablage::Ablage(Simulation& sim)
 {
 	ablageKapazitaet = 10000; //default
-	warenUebertragung = PortTailT<Ware>::create(sim, "warenUebertragung", PortMode::WAITING_MODE,
+	warenUebertragung = PortTailT<Ware>::create(sim, "warenUebertragungAblage", PortMode::WAITING_MODE,
 			ablageKapazitaet);
 	exklusiveNutzung = new Bin(sim, "AblageExklusiveNutzung", 1);
 }

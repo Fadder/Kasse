@@ -7,6 +7,7 @@
 #include "KundenGenerator.h"
 #include "Kassierer.h"
 #include "Ablage.h"
+#include "Bezahlung.h"
 using odemx::base::Simulation;
 
 /* 1 Zeiteinheit entspricht 1 Sekunde*/
@@ -23,10 +24,8 @@ class Kasse : public Simulation {
 
 public:
 	Band band;
-	//TODO
-	//Band band;
 	Ablage ablage;
-	//Bezahlung bezahlung;
+	Bezahlung bezahlung;
 
 	Kasse();
 

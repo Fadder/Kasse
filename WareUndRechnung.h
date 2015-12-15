@@ -22,11 +22,13 @@ public:
 
 class Rechnung : public PortData {
 	double betrag;
+	double dauerDerBezahlung;
 public:
-	Rechnung(double betrag);
+	Rechnung(double betrag, double dauerDerBezahlug);
 	virtual ~Rechnung() {}
 
 	double getBetrag();
+	double dauerDerGesamtenBezahlung();
 };
 
 #endif /* WAREUNDRECHNUNG_H_ */
